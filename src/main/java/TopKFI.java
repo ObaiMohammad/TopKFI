@@ -29,8 +29,8 @@ public class TopKFI{
 //		int K = Integer.parseInt(args[1]);
 //		int M = Integer.parseInt(args[2]);
 //
-        String db_path = "D:\\College\\Italy\\CS\\Data Strucutres\\Homeworks\\project\\datasets\\retail_small.dat";
-        int K = 2;
+        String db_path = "D:\\College\\Italy\\CS\\Data Strucutres\\Homeworks\\project\\datasets\\retail.dat";
+        int K = 15;
         int M = 5;
         ArrayList < int []> items = new ArrayList<>();
 
@@ -106,7 +106,7 @@ public class TopKFI{
     private static String  printArrayList (ArrayList<Entry> myArray){
         String myList="[ " ;
        for (int i = 0; i < myArray.size();i++){
-           myList =  myList +myArray.get(i).getId()+" ("+myArray.get(i).getFrequency()+"), ";
+           myList =  myList +myArray.get(i).getId()+" ("+myArray.get(i).getFrequency()+"),\n ";
        }
        myList = myList + "]";
 

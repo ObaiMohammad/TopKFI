@@ -21,7 +21,7 @@ public class Top {
             this.m = m;
             this.items = myItems;
             initializeTopKFI(items);
-//            System.out.print("I size is: "+I.size()+" "+printArrayList(I));
+//            System.out.print(printArrayList(I));
 //            System.out.println(pQueue.peek().getId());
             done = true;
         }
@@ -29,7 +29,7 @@ public class Top {
 
     public ArrayList<Entry> TopKFI (){
         Entry current= pQueue.remove();
-//        System.out.println(current.getId() + " F :" + current.getFrequency());
+        System.out.println(current.getId() + " Freq :" + current.getFrequency());
         Entry nextItem = pQueue.peek();
 //        System.out.println(nextItem.getId() + " F :" + nextItem.getFrequency());
         if ((pQueue.isEmpty())){
@@ -39,18 +39,8 @@ public class Top {
             return S;
         } else {
             S.add(current);
-            for (Integer integer : I) {
-                String sequence;
-                int frequency;
-                int lastSeqNumber = Integer.parseInt(current.getId().substring(current.getId().length() - 1));
-                if (integer > lastSeqNumber) {
-                    sequence = current.getId() + " " + integer;
-                    frequency = frequency(items, sequence);
-                    if (frequency > 0) pQueue.add(new Entry(sequence, frequency));
-                }
-            }
+//            findSequences ( pQueue, I ,current );
             return TopKFI();
-
         }
 
     }
@@ -74,6 +64,7 @@ public class Top {
         int occurrences = 0 ;
 
         for ( int i = 0 ; i < list.size();i++){
+
             if (isPresent (list.get(i),sequence)){
                 occurrences++;
             }
@@ -84,28 +75,54 @@ public class Top {
 
     private static boolean isPresent(int[] myArray, String sequence) {
 
-        if (sequence.length() == 0){
-            return true;
-        }
         Scanner in = new Scanner(sequence);
         String item = in.next();
+        int itemId = Integer.parseInt(item);
+        int itemLength = item.length();
 
-        if (Arrays.binarySearch(myArray, Integer.parseInt(item)) >= 0 ){
-
-            return isPresent(myArray,sequence.substring(item.length()));
+        if (myArray [0] > itemId){
+            return false;
         }
-
+        if (Arrays.binarySearch(myArray, itemId) >= 0 ){
+            if (!sequence.contains(" ")){
+                return true;
+            }
+            return isPresent(myArray,sequence.substring(sequence.indexOf(' ') + 1));
+        }
         return false;
     }
 
     private static String  printArrayList (ArrayList<Integer> myArray){
         String myList="" ;
         for (int i = 0; i < myArray.size();i++){
-            myList =  myList +myArray.get(i);
+            myList =  myList +myArray.get(i)+" , ";
         }
-
-
         return myList;
+    }
+
+    private void findSequences ( PriorityQueue<Entry> pQueue,List <Integer> I ,Entry current ){
+
+        String [] mySequence = current.getId().split(" ");
+        int lastSeqNumber = Integer.parseInt(mySequence[mySequence.length-1]);
+        int currIndex = I.indexOf(lastSeqNumber);
+
+        if (currIndex + 1 < I.size()) {
+
+            List<Integer> greaterItems = I.subList(currIndex + 1, I.size());
+            for (Integer item : greaterItems) {
+
+                if (item > lastSeqNumber) {
+
+                    String  sequence = current.getId() + " " + item;
+
+                    int frequency = frequency(items, sequence);
+
+//                    System.out.println(sequence + " ( " + frequency+" )");
+
+                    if (frequency > 0) pQueue.add(new Entry(sequence, frequency));
+                }
+            }
+        }
     }
 
 
