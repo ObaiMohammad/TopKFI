@@ -23,4 +23,8 @@ public class Entry implements Comparable <Entry> {
       else if (this.frequency < e.getFrequency()) return 1;
       return 0;
     }
+    public String toSting(){
+        return  id + " ("+frequency+")";
+
+    }
 }

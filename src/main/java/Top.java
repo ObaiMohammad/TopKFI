@@ -22,26 +22,39 @@ public class Top {
             this.items = myItems;
             initializeTopKFI(items);
 //            System.out.print(printArrayList(I));
-//            System.out.println(pQueue.peek().getId());
+//            System.out.println(pQueue);
             done = true;
         }
     }
 
     public ArrayList<Entry> TopKFI (){
-        Entry current= pQueue.remove();
-        System.out.println(current.getId() + " Freq :" + current.getFrequency());
-        Entry nextItem = pQueue.peek();
-//        System.out.println(nextItem.getId() + " F :" + nextItem.getFrequency());
+
         if ((pQueue.isEmpty())){
             return S;
         }
-        if ((S.size() > k && current.getFrequency() != nextItem.getFrequency())){
-            return S;
-        } else {
-            S.add(current);
-//            findSequences ( pQueue, I ,current );
+
+        Entry current= pQueue.remove();
+//        System.out.println("Curr is: "+current.getId() + " Freq :" + current.getFrequency());
+
+        findSequences ( pQueue, I ,current );
+        S.add(current);
+
+
+        Entry nextItem = pQueue.peek();
+//        System.out.println("Next is: "+nextItem.getId() + " F :" + nextItem.getFrequency());
+
+
+        if ((S.size() <= k || current.getFrequency() == nextItem.getFrequency())){
             return TopKFI();
         }
+
+        return S;
+//            return S;
+//        } else {
+//            S.add(current);
+//            findSequences ( pQueue, I ,current );
+//            return TopKFI();
+//        }
 
     }
 
