@@ -1,15 +1,19 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Top {
     private int k;
     private int m;
 
     private  ArrayList <int []> items = new ArrayList<>();
-    private ArrayList<Entry> S = new ArrayList<>();
-    private ArrayList<Integer> I = new ArrayList<>();
+    private ArrayList<Entry> solution = new ArrayList<>();
+    private ArrayList<Integer> avlItems = new ArrayList<>();
     private PriorityQueue<Entry> pQueue = new PriorityQueue<>();
+    private HashMap <Integer,Entry> itemsMap = new HashMap<>();
 
 
+
+    
     public Top (ArrayList <int []> myItems,int k, int m) {
         boolean done = false;
         while (!done) {
@@ -21,59 +25,86 @@ public class Top {
             this.m = m;
             this.items = myItems;
             initializeTopKFI(items);
-//            System.out.print(printArrayList(I));
+//            System.out.print(printArrayListInt(I));
 //            System.out.println(pQueue);
             done = true;
         }
     }
 
-    public ArrayList<Entry> TopKFI (){
+
+    public void printTopKFI (){
+        ArrayList<Entry> s = new ArrayList<>();
+        s = TopKFI();
+        if ( s.size() <= m){
+            System.out.println(printArrayListEntry(s));
+        } else System.out.println(s.size());
+
+
+    }
+
+    private ArrayList<Entry> TopKFI (){
 
         if ((pQueue.isEmpty())){
-            return S;
+            return solution;
         }
 
         Entry current= pQueue.remove();
 //        System.out.println("Curr is: "+current.getId() + " Freq :" + current.getFrequency());
 
-        findSequences ( pQueue, I ,current );
-        S.add(current);
+//        ArrayList<Integer> occ =  current.getOccurrence();
+//        System.out.println( "occurred at "+ printArrayListInt(occ));
+
+
+        findSequences ( pQueue, avlItems,current );
+        solution.add(current);
 
 
         Entry nextItem = pQueue.peek();
 //        System.out.println("Next is: "+nextItem.getId() + " F :" + nextItem.getFrequency());
 
 
-        if ((S.size() <= k || current.getFrequency() == nextItem.getFrequency())){
+        if ((solution.size() <= k || current.getFrequency() == nextItem.getFrequency())){
             return TopKFI();
         }
 
-        return S;
-//            return S;
-//        } else {
-//            S.add(current);
-//            findSequences ( pQueue, I ,current );
-//            return TopKFI();
-//        }
+        return solution;
 
     }
 
     private void initializeTopKFI(ArrayList <int []>  items){
-        HashMap <Integer,Integer> myMap = new HashMap<>();
         for (int i = 0; i < items.size();i++){
             int [] current = items.get(i);
+
             for (int j = 0; j < current.length;j++){
-                if (myMap.containsKey(current[j])){
-                    myMap.put(current[j],myMap.get(current[j])+1);
+
+                if (itemsMap.containsKey(current[j])){
+                    String  id = String.valueOf(current[j]);
+                    int freq = itemsMap.get(current[j]).getFrequency()+1;
+                    ArrayList<Integer> occ =  itemsMap.get(current[j]).getOccurrence();
+
+                    Entry entry = new Entry(id,freq);
+                    
+                    entry.setOccurrence(occ);
+                    entry.addOccurrence(i);
+
+//                    myMap.put(current[j],myMap.get(current[j])+1);
+                    itemsMap.put(current[j],entry);
+
+                } else{
+                    String  id = String.valueOf(current[j]);
+                    int freq = 1;
+                    Entry entry = new Entry(id,freq);
+                    entry.addOccurrence(i);
+
+                    itemsMap.put(current[j],entry);
                 }
-                else myMap.put(current[j],1);
             }
         }
 
-        myMap.forEach((k,v)-> { pQueue.add(new Entry(k.toString(),v));
-            I.add(k);});
+        itemsMap.forEach((k,v)-> { pQueue.add(v);
+            avlItems.add(k);});
     }
-    private static int frequency (ArrayList<int[]> list,String sequence){
+    private  int frequency (ArrayList<int[]> list,String sequence){
         int occurrences = 0 ;
 
         for ( int i = 0 ; i < list.size();i++){
@@ -86,31 +117,46 @@ public class Top {
         return occurrences;
     }
 
-    private static boolean isPresent(int[] myArray, String sequence) {
+    private  boolean isPresent(int[] purchases, String sequence) {
 
         Scanner in = new Scanner(sequence);
         String item = in.next();
         int itemId = Integer.parseInt(item);
         int itemLength = item.length();
 
-        if (myArray [0] > itemId){
+        if (purchases [0] > itemId){
             return false;
         }
-        if (Arrays.binarySearch(myArray, itemId) >= 0 ){
+        if (Arrays.binarySearch(purchases, itemId) >= 0 ){
             if (!sequence.contains(" ")){
                 return true;
             }
-            return isPresent(myArray,sequence.substring(sequence.indexOf(' ') + 1));
+            return isPresent(purchases,sequence.substring(sequence.indexOf(' ') + 1));
         }
         return false;
-    }
+    } 
+    private  int frequencyTest(String sequence) {
 
-    private static String  printArrayList (ArrayList<Integer> myArray){
-        String myList="" ;
-        for (int i = 0; i < myArray.size();i++){
-            myList =  myList +myArray.get(i)+" , ";
+        String [] seq = sequence.split("\\s");
+
+        List<Integer> list1 = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+        list1.addAll(itemsMap.get(Integer.parseInt(seq[0])).getOccurrence());
+        List<Integer> list3 = new ArrayList<>(list1);
+        printArrayListInt ((ArrayList<Integer>) list3);
+
+        for (int i = 1; i < seq.length;i++){
+
+            list2.addAll(itemsMap.get(Integer.parseInt(seq[i])).getOccurrence());
+            printArrayListInt ((ArrayList<Integer>) list3);
+
+//            list1 = list1.stream().filter(list2::contains).collect(Collectors.toList());
+            list3.retainAll(list2);
+            printArrayListInt ((ArrayList<Integer>) list3);
+
+
         }
-        return myList;
+        return list3.size();
     }
 
     private void findSequences ( PriorityQueue<Entry> pQueue,List <Integer> I ,Entry current ){
@@ -128,16 +174,32 @@ public class Top {
 
                     String  sequence = current.getId() + " " + item;
 
-                    int frequency = frequency(items, sequence);
+                    int freq = frequency(items, sequence);
+//                    int freq = frequency(sequence);
 
 //                    System.out.println(sequence + " ( " + frequency+" )");
 
-                    if (frequency > 0) pQueue.add(new Entry(sequence, frequency));
+                    if (freq > 0) pQueue.add(new Entry(sequence, freq));
                 }
             }
         }
     }
 
+    private static String  printArrayListEntry (ArrayList<Entry> myArray){
+        String myList ="";
+        for (int i = 0; i < myArray.size();i++){
+            myList =  myList +myArray.get(i).getId()+" ("+myArray.get(i).getFrequency()+")\n";
+        }
+
+        return myList;
+    }
+    private static String printArrayListInt(ArrayList<Integer> myArray){
+        String myList="" ;
+        for (int i = 0; i < myArray.size();i++){
+            myList =  myList +myArray.get(i)+" , ";
+        }
+        return myList;
+    }
 
 
 }

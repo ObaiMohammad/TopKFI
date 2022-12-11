@@ -29,9 +29,9 @@ public class TopKFI{
 //		int K = Integer.parseInt(args[1]);
 //		int M = Integer.parseInt(args[2]);
 //
-        String db_path = "D:\\College\\Italy\\CS\\Data Strucutres\\Homeworks\\project\\datasets\\retail_small.dat";
-        int K = 7;
-        int M = 5;
+        String db_path = "D:\\College\\Italy\\CS\\Data Strucutres\\Homeworks\\project\\datasets\\retail_very_small.dat";
+        int K = 3;
+        int M = 20;
         ArrayList < int []> items = new ArrayList<>();
 
 
@@ -94,23 +94,15 @@ public class TopKFI{
 
         ArrayList<Entry> s = new ArrayList<>();
         Top myTop = new Top(items,K,M);
-           s = myTop.TopKFI();
-       System.out.println(printArrayList(s));
+        myTop.printTopKFI();
+
+//       System.out.println(printArrayList(s));
 
 
         /* start mining itemsets... */
 
     }
 
-
-    private static String  printArrayList (ArrayList<Entry> myArray){
-        String myList ="";
-       for (int i = 0; i < myArray.size();i++){
-           myList =  myList +myArray.get(i).getId()+" ("+myArray.get(i).getFrequency()+")\n";
-       }
-
-        return myList;
-    }
 
 
 

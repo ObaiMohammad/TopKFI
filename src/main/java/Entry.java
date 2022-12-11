@@ -1,8 +1,12 @@
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 public class Entry implements Comparable <Entry> {
     private String id;
     private int frequency;
+
+    private ArrayList<Integer> occurrence = new ArrayList<>();
 
     public Entry (String id, int frequency){
         this.frequency = frequency;
@@ -16,6 +20,17 @@ public class Entry implements Comparable <Entry> {
     public int getFrequency() {
         return frequency;
     }
+    public ArrayList<Integer> getOccurrence() {
+        return occurrence;
+    }
+
+    public void addOccurrence(Integer index) {
+        occurrence.add(index) ;
+    }
+
+    public void setOccurrence(ArrayList<Integer> occurrence) {
+        this.occurrence = occurrence;
+    }
 
     @Override
     public int compareTo(@NotNull Entry e) {
@@ -27,4 +42,5 @@ public class Entry implements Comparable <Entry> {
         return  id + " ("+frequency+")";
 
     }
+
 }
