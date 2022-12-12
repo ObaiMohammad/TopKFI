@@ -29,8 +29,8 @@ public class TopKFI{
 //		int K = Integer.parseInt(args[1]);
 //		int M = Integer.parseInt(args[2]);
 //
-        String db_path = "D:\\College\\Italy\\CS\\Data Strucutres\\Homeworks\\project\\datasets\\retail_very_small.dat";
-        int K = 3;
+        String db_path = "D:\\College\\Italy\\CS\\Data Strucutres\\Homeworks\\project\\datasets\\retail.dat";
+        int K = 15;
         int M = 20;
         ArrayList < int []> items = new ArrayList<>();
 

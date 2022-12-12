@@ -21,7 +21,7 @@ public class Top {
             if (k < 0 && m < 0) {
                 throw new IllegalArgumentException("Please inter a positive value for K and M ");
             }
-            this.k = k-1;
+            this.k = k;
             this.m = m;
             this.items = myItems;
             initializeTopKFI(items);
@@ -33,7 +33,7 @@ public class Top {
 
 
     public void printTopKFI (){
-        ArrayList<Entry> s = new ArrayList<>();
+        ArrayList<Entry> s;
         s = TopKFI();
         if ( s.size() <= m){
             System.out.println(printArrayListEntry(s));
@@ -63,7 +63,7 @@ public class Top {
 //        System.out.println("Next is: "+nextItem.getId() + " F :" + nextItem.getFrequency());
 
 
-        if ((solution.size() <= k || current.getFrequency() == nextItem.getFrequency())){
+        if ((solution.size() <= k-1 || current.getFrequency() == nextItem.getFrequency())){
             return TopKFI();
         }
 
@@ -140,23 +140,18 @@ public class Top {
         String [] seq = sequence.split("\\s");
 
         List<Integer> list1 = new ArrayList<>();
-        List<Integer> list2 = new ArrayList<>();
         list1.addAll(itemsMap.get(Integer.parseInt(seq[0])).getOccurrence());
-        List<Integer> list3 = new ArrayList<>(list1);
-        printArrayListInt ((ArrayList<Integer>) list3);
 
         for (int i = 1; i < seq.length;i++){
-
+            List<Integer> list2 = new ArrayList<>();
             list2.addAll(itemsMap.get(Integer.parseInt(seq[i])).getOccurrence());
-            printArrayListInt ((ArrayList<Integer>) list3);
 
-//            list1 = list1.stream().filter(list2::contains).collect(Collectors.toList());
-            list3.retainAll(list2);
-            printArrayListInt ((ArrayList<Integer>) list3);
+              list1 = list1.parallelStream().filter(list2::contains).collect(Collectors.toList());
+//            list3.retainAll(list2);
 
 
         }
-        return list3.size();
+        return list1.size();
     }
 
     private void findSequences ( PriorityQueue<Entry> pQueue,List <Integer> I ,Entry current ){
@@ -174,12 +169,16 @@ public class Top {
 
                     String  sequence = current.getId() + " " + item;
 
-                    int freq = frequency(items, sequence);
-//                    int freq = frequency(sequence);
+//                    int freq = frequency(items, sequence);
+                    int freq = frequencyTest(sequence);
 
 //                    System.out.println(sequence + " ( " + frequency+" )");
-
-                    if (freq > 0) pQueue.add(new Entry(sequence, freq));
+                    if (solution.size() < k){
+                        int i = solution.size();
+                        int j = k-i;
+                        int trust = pQueue.size() < j ? 1:freq;
+                        if (freq >= trust) pQueue.add(new Entry(sequence, freq));
+                    }
                 }
             }
         }
