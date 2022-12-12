@@ -36,7 +36,11 @@ public class Top {
         ArrayList<Entry> s;
         s = TopKFI();
         if ( s.size() <= m){
-            System.out.println(printArrayListEntry(s));
+            System.out.println(s.size());
+            for (Entry e: s ){
+                System.out.println(e.toSting());
+
+            }
         } else System.out.println(s.size());
 
 
@@ -47,6 +51,8 @@ public class Top {
         if ((pQueue.isEmpty())){
             return solution;
         }
+        System.out.println("pQueue size is " + pQueue.size());
+
 
         Entry current= pQueue.remove();
 //        System.out.println("Curr is: "+current.getId() + " Freq :" + current.getFrequency());
@@ -57,6 +63,7 @@ public class Top {
 
         findSequences ( pQueue, avlItems,current );
         solution.add(current);
+        System.out.println("Top item is "+current.toSting());
 
 
         Entry nextItem = pQueue.peek();
