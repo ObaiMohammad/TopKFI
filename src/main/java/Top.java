@@ -51,7 +51,7 @@ public class Top {
         if ((pQueue.isEmpty())){
             return solution;
         }
-        System.out.println("pQueue size is " + pQueue.size());
+//        System.out.println("pQueue size is " + pQueue.size());
 
 
         Entry current= pQueue.remove();
@@ -63,7 +63,7 @@ public class Top {
 
         findSequences ( pQueue, avlItems,current );
         solution.add(current);
-        System.out.println("Top item is "+current.toSting());
+//        System.out.println("Top item is "+current.toSting());
 
 
         Entry nextItem = pQueue.peek();
@@ -159,6 +159,52 @@ public class Top {
 
         }
         return list1.size();
+    }    private  int frequencyTest1(String sequence) {
+
+        String [] seq = sequence.split("\\s");
+        int a = 0;
+        int b = 0;
+
+
+
+
+        List<Integer> list1 = new ArrayList<>();
+        list1.addAll(itemsMap.get(Integer.parseInt(seq[0])).getOccurrence());
+//
+        for (int i = 1; i < seq.length;i++){
+            List<Integer> list2 = new ArrayList<>();
+            list2.addAll(itemsMap.get(Integer.parseInt(seq[i])).getOccurrence());
+            list1 = listMatch(list1,list2);
+//
+//              list1 = list1.parallelStream().filter(list2::contains).collect(Collectors.toList());
+////            list3.retainAll(list2);
+//
+//
+        }
+//        return list1.size();
+        return list1.size();
+    }
+
+    private List<Integer> listMatch(List<Integer> list1, List<Integer> list2) {
+
+        int a =0;
+        int b=0;
+        List<Integer> list3 = new ArrayList<>();
+
+        while (a < list1.size() && b < list2.size()) {
+
+            if (list1.get(a) == list2.get(b)) {
+                list3.add(list1.get(a));
+                a++;
+                b++;
+
+            } else if (list1.get(a) < list2.get(b)) {
+                a++;
+
+            } else b++;
+        }
+
+        return list3;
     }
 
     private void findSequences ( PriorityQueue<Entry> pQueue,List <Integer> I ,Entry current ){
@@ -177,7 +223,8 @@ public class Top {
                     String  sequence = current.getId() + " " + item;
 
 //                    int freq = frequency(items, sequence);
-                    int freq = frequencyTest(sequence);
+//                    int freq = frequencyTest(sequence);
+                    int freq = frequencyTest1(sequence);
 
 //                    System.out.println(sequence + " ( " + frequency+" )");
                     if (solution.size() < k){
