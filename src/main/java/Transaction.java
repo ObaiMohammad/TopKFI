@@ -1,13 +1,15 @@
 
-public class Transaction {
-    private Integer [] trans;
+import java.util.Iterator;
 
-    public Transaction (Integer [] items){
+public class Transaction  {
+    private int [] trans;
+
+    public Transaction (int [] items){
         trans = items;
     }
 
-    public int get(int index){
-        return trans [index];
+    public int [] toArray(){
+        return trans;
     }
 
 }

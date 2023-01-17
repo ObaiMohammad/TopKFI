@@ -30,9 +30,9 @@ public class TopKFI{
 //		int M = Integer.parseInt(args[2]);
 //
         String db_path = "D:\\College\\Italy\\CS\\Data Strucutres\\Homeworks\\project\\datasets\\accidents.dat";
-        int K = 1500;
+        int K = 150;
         int M = 10000;
-        ArrayList < int []> items = new ArrayList<>();
+        ArrayList < Transaction > items = new ArrayList<>();
 
 
         if(K < 0 || M < 0){
@@ -78,7 +78,8 @@ public class TopKFI{
                 }
 
                 /* do something with the array "items" ... */
-                items.add(items_int);
+                items.add(new Transaction(items_int));
+
 
             }
 
@@ -89,6 +90,8 @@ public class TopKFI{
             return;
         }
 
+        /* start mining itemsets... */
+
         long start = System.currentTimeMillis();
         ArrayList<Entry> s = new ArrayList<>();
         Top myTop = new Top(items,K,M);
@@ -97,12 +100,5 @@ public class TopKFI{
 
         System.out.println((end-start)/1000 + " seconds");
 
-
-        /* start mining itemsets... */
-
     }
-
-
-
-
 }

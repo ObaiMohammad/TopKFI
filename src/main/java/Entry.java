@@ -1,4 +1,3 @@
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -12,6 +11,11 @@ public class Entry implements Comparable <Entry> {
         this.frequency = frequency;
         this.itemSet = itemSet;
     }
+    public Entry (String itemSet, int frequency,ArrayList<Integer> occurrence){
+        this.frequency = frequency;
+        this.itemSet = itemSet;
+        this.occurrence = occurrence;
+    }
 
     public String getItemSet() {
         return itemSet;
@@ -24,19 +28,12 @@ public class Entry implements Comparable <Entry> {
         return occurrence;
     }
 
-    public void addOccurrence(Integer index) {
-        occurrence.add(index) ;
-    }
-
-    public void setOccurrence(ArrayList<Integer> occurrence) {
-        this.occurrence = occurrence;
-    }
 
     @Override
-    public int compareTo(@NotNull Entry e) {
-      if( this.frequency > e.getFrequency() ) return -1;
-      else if (this.frequency < e.getFrequency()) return 1;
-      return 0;
+    public int compareTo( Entry e) {
+        if( this.frequency > e.getFrequency() ) return -1;
+        else if (this.frequency < e.getFrequency()) return 1;
+        return 0;
     }
     public String toSting(){
         return  itemSet + " ("+frequency+")";
