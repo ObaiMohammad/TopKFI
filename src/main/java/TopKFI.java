@@ -29,9 +29,9 @@ public class TopKFI{
 //		int K = Integer.parseInt(args[1]);
 //		int M = Integer.parseInt(args[2]);
 //
-        String db_path = "D:\\College\\Italy\\CS\\Data Strucutres\\Homeworks\\project\\datasets\\retail_very_small.dat";
-        int K = 15;
-        int M = 20;
+        String db_path = "D:\\College\\Italy\\CS\\Data Strucutres\\Homeworks\\project\\datasets\\accidents.dat";
+        int K = 1500;
+        int M = 10000;
         ArrayList < int []> items = new ArrayList<>();
 
 
@@ -76,12 +76,9 @@ public class TopKFI{
                         return;
                     }
                 }
-                items.add(items_int);
 
                 /* do something with the array "items" ... */
-//                for (int i = 0; i < items.size();i++){
-//                    System.out.println(printArrayList(items.get(i)));
-//                }
+                items.add(items_int);
 
             }
 
@@ -92,18 +89,18 @@ public class TopKFI{
             return;
         }
 
+        long start = System.currentTimeMillis();
         ArrayList<Entry> s = new ArrayList<>();
         Top myTop = new Top(items,K,M);
         myTop.printTopKFI();
+        long end = System.currentTimeMillis();
 
-//       System.out.println(printArrayList(s));
+        System.out.println((end-start)/1000 + " seconds");
 
 
         /* start mining itemsets... */
 
     }
-
-
 
 
 

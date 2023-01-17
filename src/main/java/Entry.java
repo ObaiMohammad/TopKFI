@@ -3,18 +3,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class Entry implements Comparable <Entry> {
-    private String id;
+    private String itemSet;
     private int frequency;
 
     private ArrayList<Integer> occurrence = new ArrayList<>();
 
-    public Entry (String id, int frequency){
+    public Entry (String itemSet, int frequency){
         this.frequency = frequency;
-        this.id = id;
+        this.itemSet = itemSet;
     }
 
-    public String getId() {
-        return id;
+    public String getItemSet() {
+        return itemSet;
     }
 
     public int getFrequency() {
@@ -39,7 +39,7 @@ public class Entry implements Comparable <Entry> {
       return 0;
     }
     public String toSting(){
-        return  id + " ("+frequency+")";
+        return  itemSet + " ("+frequency+")";
 
     }
 
